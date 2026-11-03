@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0f0f1a">
+  <meta name="theme-color" content="#141821">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AGENT">
@@ -13,14 +13,18 @@
   <link rel="apple-touch-icon" href="icon.svg">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
+      background-color: #141821;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    }
     body {
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      background: #0f0f1a;
-      color: #e0e0f0;
-      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      padding: 12px 14px 16px;
+      padding: 12px 16px 14px;
       max-width: 480px;
       margin: 0 auto;
     }
@@ -31,66 +35,53 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1.5px solid #2a2a4a;
+      flex-shrink: 0;
     }
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 22px;
+      font-size: 25px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: #ffffff;
     }
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #6af7a0;
-      box-shadow: 0 0 8px #6af7a0;
-    }
     .btn-settings {
-      background: #1a1a2e;
-      border: 1.5px solid #3a3a6a;
-      color: #c0b8ff;
-      padding: 6px 12px;
+      background: #1c2230;
+      border: 1px solid #364052;
+      color: #cbd5e1;
+      padding: 7px 14px;
       border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 13.5px;
+      font-weight: 600;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
-    .btn-settings:active { background: #2a2a4a; }
+    .btn-settings:active { background: #283044; }
 
-    /* KOMUT BUTONLARI (SEÇİLMEYENLER MAT GRİ, SEÇİLEN RENKLİ) */
+    /* ANA KOMUT BUTONLARI (SEÇİLMEYENLER FÜME, SEÇİLEN PARLAK RENKLİ) */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
       margin-bottom: 10px;
+      flex-shrink: 0;
     }
     .cmd-btn {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 11px 13px;
-      border-radius: 12px;
-      background: #1a1a2e;
-      border: 1.5px solid #2a2a4a;
-      color: #7a7a9a;
-      font-size: 13.5px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: #212634;
+      border: 1.5px solid #32394a;
+      color: #94a3b8;
+      font-size: 15px;
       font-weight: 800;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.18s ease;
     }
     .cmd-btn .cmd-icon {
-      font-size: 16px;
+      font-size: 17px;
       filter: grayscale(100%);
-      opacity: 0.55;
+      opacity: 0.5;
       transition: all 0.18s ease;
     }
     .cmd-btn.active {
@@ -102,252 +93,276 @@
       opacity: 1;
     }
 
-    /* AKTİF BUTON RENK TEMALARI */
+    /* 5-6 Buton Olduğunda Otomatik Daralma */
+    .grid.compact { gap: 8px; margin-bottom: 8px; }
+    .grid.compact .cmd-btn { padding: 9px 12px; font-size: 13.5px; border-radius: 11px; }
+
+    /* 7+ Buton Olduğunda 3 Sütunlu Kompakt Görünüm */
+    .grid.ultra-compact {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 8px;
+      max-height: 86px;
+      overflow-y: auto;
+    }
+    .grid.ultra-compact .cmd-btn { padding: 8px 9px; font-size: 12px; border-radius: 10px; }
+
+    /* GÖRSELDEKİ PARLAK NEON AKTİF BUTON RENKLERİ */
     .cmd-btn.active.clr-blue {
-      background: linear-gradient(135deg, #1e62d0, #2979ff);
-      border-color: #82b1ff;
-      box-shadow: 0 4px 14px rgba(41, 121, 255, 0.4);
+      background: linear-gradient(135deg, #1d63dc, #2979ff);
+      border-color: #64b5f6;
+      box-shadow: 0 4px 18px rgba(41, 121, 255, 0.45);
     }
     .cmd-btn.active.clr-green {
-      background: linear-gradient(135deg, #00963e, #00c853);
-      border-color: #6af7a0;
-      box-shadow: 0 4px 14px rgba(0, 200, 83, 0.38);
+      background: linear-gradient(135deg, #169c52, #22c55e);
+      border-color: #6ee7b7;
+      box-shadow: 0 4px 18px rgba(34, 197, 94, 0.42);
     }
     .cmd-btn.active.clr-orange {
-      background: linear-gradient(135deg, #d84315, #ff9100);
-      border-color: #ffd180;
-      box-shadow: 0 4px 14px rgba(255, 145, 0, 0.4);
+      background: linear-gradient(135deg, #d96b0b, #f59e0b);
+      border-color: #fcd34d;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.45);
     }
     .cmd-btn.active.clr-purple {
-      background: linear-gradient(135deg, #6a1b9a, #aa00ff);
-      border-color: #ea80fc;
-      box-shadow: 0 4px 14px rgba(170, 0, 255, 0.4);
+      background: linear-gradient(135deg, #7e22ce, #a855f7);
+      border-color: #d8b4fe;
+      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.45);
     }
     .cmd-btn.active.clr-red {
-      background: linear-gradient(135deg, #b71c1c, #ff5252);
-      border-color: #ff8a80;
-      box-shadow: 0 4px 14px rgba(255, 82, 82, 0.4);
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+      border-color: #fca5a5;
+      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.45);
     }
     .cmd-btn.active.clr-teal {
-      background: linear-gradient(135deg, #006978, #00b8d4);
-      border-color: #84ffff;
-      box-shadow: 0 4px 14px rgba(0, 184, 212, 0.4);
+      background: linear-gradient(135deg, #0e7490, #06b6d4);
+      border-color: #67e8f9;
+      box-shadow: 0 4px 18px rgba(6, 182, 212, 0.45);
     }
     .cmd-btn.active.clr-gold {
-      background: linear-gradient(135deg, #c66900, #ffb300);
-      border-color: #ffe57f;
-      box-shadow: 0 4px 14px rgba(255, 179, 0, 0.4);
+      background: linear-gradient(135deg, #b45309, #eab308);
+      border-color: #fde047;
+      box-shadow: 0 4px 18px rgba(234, 179, 8, 0.45);
     }
 
-    /* HIZLI ALT ÇİPLER */
+    /* HIZLI ALT ÇİPLER (KAPSÜL TASARIM) */
     .chips-wrap {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 6px;
+      padding-bottom: 4px;
       margin-bottom: 8px;
       scrollbar-width: none;
+      flex-shrink: 0;
     }
     .chips-wrap::-webkit-scrollbar { display: none; }
     .chip {
       white-space: nowrap;
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
-      color: #c0b8ff;
-      padding: 6px 11px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 600;
+      background: #181d28;
+      border: 1px solid #364052;
+      color: #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 500;
       cursor: pointer;
     }
-    .chip:active { background: #2a2a5a; border-color: #7c6af7; color: #fff; }
+    .chip:active { background: #262f42; border-color: #64748b; }
 
-    /* KONU VE SAĞ ÜST MİKROFON DURUM ROZETİ */
+    /* KONU SATIRI VE SAĞ ÜST DURUM ROZETİ (GÖRSELDEKİ GİBİ KUTUSUZ NET BAŞLIK) */
     .top-info-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
     }
-    .subject-box {
+    .subject-inline {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
-      border-radius: 8px;
-      padding: 6px 10px;
       flex: 1;
     }
-    .subject-box span {
-      font-size: 12px;
-      color: #888;
+    .subject-inline span {
+      font-size: 16px;
+      color: #cbd5e1;
       font-weight: 700;
+      white-space: nowrap;
     }
-    .subject-box input {
+    .subject-inline input {
       background: transparent;
       border: none;
-      color: #fff;
-      font-size: 13.5px;
+      color: #ffffff;
+      font-size: 16px;
       font-weight: 700;
       width: 100%;
       outline: none;
     }
 
     @keyframes micPulse {
-      0% { box-shadow: 0 0 0 0 rgba(247, 106, 106, 0.6); }
-      70% { box-shadow: 0 0 0 9px rgba(247, 106, 106, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(247, 106, 106, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
+      70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
     .mic-badge {
-      font-size: 11px;
-      padding: 6px 10px;
-      border-radius: 12px;
-      font-weight: 700;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 18px;
+      font-weight: 600;
       white-space: nowrap;
       user-select: none;
     }
     .mic-aktif-badge {
-      background: #3a1010;
-      border: 1.5px solid #f76a6a;
-      color: #f76a6a;
+      background: #3b1822;
+      border: 1.5px solid #ef4444;
+      color: #fca5a5;
       animation: micPulse 1.5s infinite;
     }
     .mic-donuk-badge {
-      background: #1e2a3f;
-      border: 1.5px solid #7c6af7;
-      color: #c0b8ff;
+      background: #212634;
+      border: 1.5px solid #3b4458;
+      color: #94a3b8;
     }
 
-    /* YAZI KUTUSU */
+    /* YAZI KUTUSU (GÖRSELDEKİ İNCE EFLATUN ÇERÇEVE VE COMPACT YÜKSEKLİK) */
     .editor-wrap {
       flex: 1;
+      min-height: 90px;
+      max-height: 125px;
       display: flex;
       flex-direction: column;
-      background: #0f0f1a;
-      border: 1.5px solid #3a3a6a;
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 8px;
-      min-height: 135px;
+      background: #10131c;
+      border: 1.5px solid #6355b5;
+      box-shadow: 0 0 12px rgba(99, 85, 181, 0.2);
+      border-radius: 14px;
+      padding: 10px 13px;
+      margin-bottom: 10px;
     }
     .editor-wrap:focus-within {
-      border-color: #7c6af7;
+      border-color: #8b7ae6;
+      box-shadow: 0 0 14px rgba(139, 122, 230, 0.35);
     }
     textarea {
       flex: 1;
       width: 100%;
       background: transparent;
       border: none;
-      color: #e0e0f0;
-      font-size: 15px;
-      line-height: 1.5;
+      color: #f1f5f9;
+      font-size: 15.5px;
+      line-height: 1.45;
       resize: none;
       outline: none;
+      overflow-y: auto;
     }
     .attachments {
       display: flex;
-      flex-wrap: wrap;
       gap: 6px;
+      overflow-x: auto;
       margin-top: 6px;
+      scrollbar-width: none;
+      flex-shrink: 0;
     }
+    .attachments::-webkit-scrollbar { display: none; }
     .att-chip {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
-      padding: 4px 9px;
-      border-radius: 7px;
+      gap: 5px;
+      background: #212634;
+      border: 1px solid #3b4458;
+      padding: 3px 9px;
+      border-radius: 8px;
       font-size: 11.5px;
-      color: #c0b8ff;
+      color: #e2e8f0;
+      white-space: nowrap;
     }
     .att-chip button {
       background: none;
       border: none;
-      color: #f76a6a;
+      color: #f87171;
       font-weight: bold;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    /* YAZI KUTUSU ALTI KONTROL SATIRI (DONDUR/DEVAM ET + TEMİZLE) */
+    /* DONDUR / DEVAM ET VE TEMİZLE SATIRI (GÖRSELDEKİ KEHRİBAR VE FÜME TONLAR) */
     .voice-action-row {
       display: flex;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
     }
     .btn-voice-toggle {
-      flex: 1.5;
-      padding: 11px 10px;
-      border-radius: 10px;
-      border: 1.5px solid #7c6af7;
-      background: #1e2a3f;
-      color: #c0b8ff;
-      font-size: 13px;
-      font-weight: 700;
+      flex: 1.45;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1.5px solid #3b4458;
+      background: #232836;
+      color: #e2e8f0;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
     }
     .btn-voice-toggle.listening {
-      background: #f7b96a;
-      border-color: #f7b96a;
-      color: #0f0f1a;
+      background: #44341b;
+      border-color: #d99b26;
+      color: #fbd38d;
     }
     .btn-clear {
       flex: 1;
-      padding: 11px 10px;
-      border-radius: 10px;
-      border: 1.5px solid #3a3a6a;
-      background: #1a1a2e;
-      color: #aaa;
-      font-size: 13px;
-      font-weight: 700;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1.5px solid #364052;
+      background: #232836;
+      color: #cbd5e1;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
     }
-    .btn-clear:active { background: #2a2a4a; color: #fff; }
+    .btn-clear:active { background: #2e3547; color: #fff; }
 
-    /* MEDYA EKLEME SATIRI (KAMERA | GALERİ | DOSYA) */
+    /* MEDYA EKLEME SATIRI (GÖRSELDEKİ YUVARLAK KAPSÜL BUTONLAR) */
     .media-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 9px;
       margin-bottom: 14px;
+      flex-shrink: 0;
     }
     .media-btn {
-      background: #1a1a2e;
-      border: 1px solid #2a2a4a;
-      border-radius: 10px;
-      padding: 9px 4px;
-      color: #c0b8ff;
-      font-size: 12px;
-      font-weight: 600;
+      background: #232836;
+      border: 1px solid #384152;
+      border-radius: 20px;
+      padding: 9px 6px;
+      color: #cbd5e1;
+      font-size: 12.5px;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 5px;
     }
-    .media-btn:active { background: #2a2a4a; border-color: #7c6af7; }
+    .media-btn:active { background: #2e3547; border-color: #64748b; }
 
-    /* ORTALANMIŞ SADE GÖNDER BUTONU */
+    /* ORTALANMIŞ NEON YEŞİL GÖNDER BUTONU */
     .send-wrap {
       display: flex;
       justify-content: center;
       margin-top: auto;
+      flex-shrink: 0;
     }
     .btn-send {
-      width: 65%;
+      width: 68%;
       padding: 13px 20px;
-      border-radius: 24px;
-      border: 1.5px solid #2a7a4a;
-      background: linear-gradient(135deg, #1b6d3e, #2a9d5c);
-      color: #ffffff;
-      font-size: 15px;
+      border-radius: 26px;
+      border: none;
+      background: linear-gradient(90deg, #00d26a, #00e676);
+      color: #051b0e;
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(42, 157, 92, 0.35);
+      box-shadow: 0 4px 20px rgba(0, 230, 118, 0.42);
     }
     .btn-send:active { transform: scale(0.98); }
     .btn-send:disabled { opacity: 0.5; cursor: default; }
@@ -357,7 +372,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(10, 12, 18, 0.82);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -365,10 +380,10 @@
     }
     .popup-overlay.show { display: flex; }
     .popup {
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
+      background: #1a1f2c;
+      border: 1px solid #364052;
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px;
       width: 100%;
       max-width: 390px;
       max-height: 88dvh;
@@ -377,40 +392,39 @@
     .popup-title {
       font-size: 15px;
       font-weight: 700;
-      color: #c0b8ff;
+      color: #ffffff;
       margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .sec-box {
-      background: #0f0f1a;
-      border: 1px solid #2a2a4a;
+      background: #121620;
+      border: 1px solid #283040;
       border-radius: 12px;
       padding: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .sec-title {
       font-size: 12px;
       font-weight: 700;
-      color: #7c6af7;
+      color: #94a3b8;
       margin-bottom: 8px;
     }
     .popup input[type="text"], .popup input[type="url"] {
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
+      background: #1c2230;
+      border: 1px solid #364052;
       border-radius: 8px;
-      color: #e0e0f0;
+      color: #f1f5f9;
       padding: 9px 10px;
       font-size: 13px;
       width: 100%;
       outline: none;
       margin-bottom: 8px;
     }
-    .popup input:focus { border-color: #7c6af7; }
+    .popup input:focus { border-color: #64748b; }
 
-    /* RENK VE İKON SEÇİCİLER */
-    .picker-label { font-size: 11px; color: #888; margin-bottom: 5px; }
+    .picker-label { font-size: 11.5px; color: #94a3b8; margin-bottom: 5px; }
     .color-row, .icon-row {
       display: flex;
       gap: 8px;
@@ -429,8 +443,8 @@
       transform: scale(1.15);
     }
     .ico-swatch {
-      background: #1a1a2e;
-      border: 1px solid #3a3a6a;
+      background: #1c2230;
+      border: 1px solid #364052;
       border-radius: 8px;
       width: 32px;
       height: 32px;
@@ -441,28 +455,27 @@
       cursor: pointer;
     }
     .ico-swatch.selected {
-      border-color: #7c6af7;
-      background: #2a2a5a;
+      border-color: #ffffff;
+      background: #2e374d;
     }
 
-    /* MEVCUT ŞABLON LİSTESİ */
     .tpl-list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #1a1a2e;
-      border: 1px solid #2a2a4a;
+      background: #1c2230;
+      border: 1px solid #2e374d;
       border-radius: 8px;
       padding: 7px 10px;
       margin-bottom: 6px;
       font-size: 12.5px;
     }
     .tpl-del-btn {
-      background: #2e0d0d;
-      border: 1px solid #7a2a2a;
-      color: #f76a6a;
+      background: #3b1822;
+      border: 1px solid #ef4444;
+      color: #fca5a5;
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 4px 9px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
@@ -476,20 +489,20 @@
       font-weight: 700;
       cursor: pointer;
     }
-    .btn-purple { background: #7c6af7; color: #fff; }
-    .btn-outline { background: #1a1a2e; border: 1px solid #3a3a6a; color: #aaa; margin-top: 6px; }
+    .btn-save { background: #2979ff; color: #fff; }
+    .btn-outline { background: #1c2230; border: 1px solid #364052; color: #cbd5e1; margin-top: 6px; }
 
     .toast {
       position: fixed;
-      top: 56px;
+      top: 52px;
       left: 50%;
       transform: translateX(-50%);
-      background: #1e3a1e;
-      border: 1.5px solid #2a7a4a;
-      color: #6af7a0;
+      background: #163626;
+      border: 1.5px solid #22c55e;
+      color: #86efac;
       padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 12px;
+      border-radius: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       display: none;
       z-index: 200;
@@ -502,10 +515,7 @@
 
   <!-- ÜST BAR -->
   <div class="header">
-    <div class="brand">
-      <div class="status-dot"></div>
-      <span>AGENT</span>
-    </div>
+    <div class="brand">AGENT</div>
     <button class="btn-settings" onclick="acAyarlar()">⚙️ Ayarlar</button>
   </div>
 
@@ -515,9 +525,9 @@
   <!-- HIZLI ALT ÇİPLER -->
   <div class="chips-wrap" id="chipsContainer"></div>
 
-  <!-- KONU VE MİKROFON DURUM ROZETİ -->
+  <!-- KONU VE SAĞ ÜST MİKROFON ROZETİ -->
   <div class="top-info-row">
-    <div class="subject-box">
+    <div class="subject-inline">
       <span>Konu:</span>
       <input type="text" id="subjectInput" value="Hazırla" oninput="otomatikTaslakKaydet()">
     </div>
@@ -533,7 +543,7 @@
   <!-- DONDUR / DEVAM ET VE TEMİZLE SATIRI -->
   <div class="voice-action-row">
     <button id="sesli-dondur-btn" class="btn-voice-toggle" onclick="dondurSesliNot()">🎤 Dinlemeye Başla</button>
-    <button class="btn-clear" onclick="clearAll()">🗑️ Temizle</button>
+    <button class="btn-clear" onclick="clearAll()">Kapat / Temizle</button>
   </div>
 
   <!-- MEDYA EKLEME SATIRI -->
@@ -548,7 +558,7 @@
   <input type="file" id="galInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
   <input type="file" id="fileInput" accept="*/*" multiple style="display:none" onchange="handleFiles(this.files)">
 
-  <!-- ORTALANMIŞ SADE GÖNDER BUTONU -->
+  <!-- ORTALANMIŞ NEON YEŞİL GÖNDER BUTONU -->
   <div class="send-wrap">
     <button class="btn-send" id="sendBtn" onclick="sendMail()">GÖNDER</button>
   </div>
@@ -558,14 +568,14 @@
     <div class="popup">
       <div class="popup-title">
         <span>⚙️ Ayarlar ve Şablonlar</span>
-        <button onclick="kapatAyarlar()" style="background:none;border:none;color:#888;font-size:18px;cursor:pointer;">✕</button>
+        <button onclick="kapatAyarlar()" style="background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;">✕</button>
       </div>
 
       <!-- 1. APPS SCRIPT URL -->
       <div class="sec-box">
         <div class="sec-title">🔗 Google Apps Script Bağlantısı</div>
         <input type="url" id="webhookInput" placeholder="https://script.google.com/macros/s/.../exec">
-        <button class="btn-small btn-purple" onclick="saveWebhook()">Bağlantıyı Kaydet</button>
+        <button class="btn-small btn-save" onclick="saveWebhook()">Bağlantıyı Kaydet</button>
       </div>
 
       <!-- 2. YENİ ŞABLON EKLE -->
@@ -581,7 +591,7 @@
         <div class="picker-label">İkon Seçin:</div>
         <div class="icon-row" id="iconPickerRow"></div>
 
-        <button class="btn-small btn-purple" onclick="addTemplate()">Şablonu Ekle</button>
+        <button class="btn-small btn-save" onclick="addTemplate()">Şablonu Ekle</button>
       </div>
 
       <!-- 3. MEVCUT BUTONLARI YÖNET / SİL -->
@@ -603,12 +613,12 @@
 
     const RENK_SECENEKLERI = [
       { cls: 'clr-blue', hex: '#2979ff' },
-      { cls: 'clr-green', hex: '#00c853' },
-      { cls: 'clr-orange', hex: '#ff9100' },
-      { cls: 'clr-purple', hex: '#aa00ff' },
-      { cls: 'clr-red', hex: '#ff5252' },
-      { cls: 'clr-teal', hex: '#00b8d4' },
-      { cls: 'clr-gold', hex: '#ffb300' }
+      { cls: 'clr-green', hex: '#22c55e' },
+      { cls: 'clr-orange', hex: '#f59e0b' },
+      { cls: 'clr-purple', hex: '#a855f7' },
+      { cls: 'clr-red', hex: '#ef4444' },
+      { cls: 'clr-teal', hex: '#06b6d4' },
+      { cls: 'clr-gold', hex: '#eab308' }
     ];
 
     const IKON_SECENEKLERI = ['📝', '📈', '⚖️', '📰', '💰', '🏦', '⚡', '🎯', '🛡️', '📊'];
@@ -637,6 +647,13 @@
     function renderTemplates() {
       const grid = document.getElementById('templateGrid');
       grid.innerHTML = '';
+
+      grid.className = 'grid';
+      if (templates.length > 6) {
+        grid.classList.add('ultra-compact');
+      } else if (templates.length > 4) {
+        grid.classList.add('compact');
+      }
 
       if (!templates.find(t => t.id === activeId) && templates.length > 0) {
         activeId = templates[0].id;
@@ -672,6 +689,7 @@
         el.onclick = () => {
           const area = document.getElementById('bodyInput');
           area.value = area.value ? area.value.trim() + '\n' + c + ' ' : c + ' ';
+          area.scrollTop = area.scrollHeight;
           oncekiOturumMetni = area.value.trim();
           otomatikTaslakKaydet();
         };
@@ -682,7 +700,7 @@
     // ===== BÜTÇE UYGULAMASINDAKİ TEKRARSIZ SES MOTORU =====
     var sesTanima = null;
     var sesDinlemeAktif = false;
-    var sesDonukMu = true; // İlk açılışta sessiz (Dondurulmuş) başlar
+    var sesDonukMu = true;
     var oncekiOturumMetni = '';
 
     function manuelMetinDegisti() {
@@ -699,7 +717,7 @@
         bdg.className = 'mic-badge mic-aktif-badge';
         bdg.textContent = '🔴 Dinleniyor...';
         dBtn.className = 'btn-voice-toggle listening';
-        dBtn.textContent = '⏸️ Tamam (Dondur)';
+        dBtn.textContent = '⏸ Tamam (Dondur)';
       } else {
         bdg.className = 'mic-badge mic-donuk-badge';
         bdg.textContent = '⏸️ Donduruldu';
@@ -829,7 +847,7 @@
       attachments.forEach((att, idx) => {
         const chip = document.createElement('div');
         chip.className = 'att-chip';
-        chip.innerHTML = `<span>📎 ${att.name.slice(0, 22)}</span><button onclick="removeAtt(${idx})">✕</button>`;
+        chip.innerHTML = `<span>📎 ${att.name.slice(0, 18)}</span><button onclick="removeAtt(${idx})">✕</button>`;
         list.appendChild(chip);
       });
     }
@@ -922,7 +940,7 @@
       templates.forEach(t => {
         const row = document.createElement('div');
         row.className = 'tpl-list-item';
-        row.innerHTML = `<span>${t.icon || '⚡'} <b>${t.label}</b> <span style="color:#888;font-size:11px;">(${t.subject})</span></span>`;
+        row.innerHTML = `<span>${t.icon || '⚡'} <b>${t.label}</b> <span style="color:#94a3b8;font-size:11px;">(${t.subject})</span></span>`;
         const delBtn = document.createElement('button');
         delBtn.className = 'tpl-del-btn';
         delBtn.textContent = 'Sil';
