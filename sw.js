@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agent-pwa-v2';
+const CACHE_NAME = 'agent-pwa-v3';
 const ASSETS = [
   './',
   './index.html',
