@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f1319">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AGENT">
+  <title>AGENT</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <style>
+    :root {
+      --bg: #0f1319;
+      --card: #181e27;
+      --border: #2a3442;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --blue: #2979ff;
+      --green: #00e676;
+      --orange: #ff9100;
+      --purple: #d500f9;
+      --red: #ff3b30;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    /* ÜST BAR */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-top: 4px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-top {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-top:active { background: var(--card); color: var(--text); }
+
+    /* ANA KOMUT BUTONLARI (2x2 GRID) */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .cmd-btn {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 14px;
+      border-radius: 14px;
+      border: 2px solid transparent;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.2s, opacity 0.2s;
+      opacity: 0.72;
+    }
+    .cmd-btn.active {
+      opacity: 1;
+      transform: scale(1.02);
+      border-color: rgba(255,255,255,0.75);
+    }
+    .cmd-blue { background: linear-gradient(135deg, #1e62d0, #2979ff); box-shadow: 0 4px 16px rgba(41,121,255,0.35); }
+    .cmd-green { background: linear-gradient(135deg, #00b248, #00e676); box-shadow: 0 4px 16px rgba(0,230,118,0.3); }
+    .cmd-orange { background: linear-gradient(135deg, #e65100, #ff9100); box-shadow: 0 4px 16px rgba(255,145,0,0.35); }
+    .cmd-purple { background: linear-gradient(135deg, #8e24aa, #d500f9); box-shadow: 0 4px 16px rgba(213,0,249,0.35); }
+    .cmd-custom { background: linear-gradient(135deg, #37474f, #546e7a); box-shadow: 0 4px 14px rgba(84,110,122,0.3); }
+    .del-tpl {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 12px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    /* HIZLI ALT ÇİPLER */
+    .chips-wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      scrollbar-width: none;
+    }
+    .chips-wrap::-webkit-scrollbar { display: none; }
+    .chip {
+      white-space: nowrap;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      padding: 7px 13px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .chip:active { background: #263140; border-color: var(--blue); }
+
+    /* AKTİF KONU SATIRI */
+    .subject-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .subject-bar span { color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .subject-bar input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      width: 100%;
+      outline: none;
+    }
+
+    /* METİN VE DİKTE KUTUSU */
+    .editor-box {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      min-height: 150px;
+    }
+    textarea {
+      flex: 1;
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+    }
+    .interim-text {
+      color: #38bdf8;
+      font-size: 14px;
+      font-style: italic;
+      min-height: 20px;
+      margin-top: 6px;
+    }
+
+    /* EKLENEN DOSYA LİSTESİ */
+    .attachments {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .att-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #242f3d;
+      border: 1px solid #38485c;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #e2e8f0;
+    }
+    .att-chip button {
+      background: none;
+      border: none;
+      color: #f87171;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* MİKROFON VE MEDYA BARI */
+    .media-section {
+      display: flex;
+       flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .media-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 6px;
+    }
+    .icon-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .icon-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .icon-btn:active .icon-circle { background: #263140; }
+
+    .mic-btn {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff5252 0%, #d50000 100%);
+      border: 4px solid rgba(255, 82, 82, 0.35);
+      box-shadow: 0 0 24px rgba(255, 59, 48, 0.5);
+      color: #fff;
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mic-btn.listening {
+      animation: pulse 1.2s infinite;
+      background: radial-gradient(circle, #ff1744 0%, #b71c1c 100%);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); transform: scale(1); }
+      70% { box-shadow: 0 0 0 18px rgba(255, 59, 48, 0); transform: scale(1.06); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); transform: scale(1); }
+    }
+    .mic-label {
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .mic-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* ALT AKSİYON BARI */
+    .bottom-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .act-btn {
+      padding: 14px 10px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .act-btn:active { opacity: 0.8; }
+    .btn-send {
+      background: linear-gradient(135deg, #00c853, #00e676);
+      color: #062010;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0, 230, 118, 0.35);
+    }
+
+    /* MODAL */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      max-width: 380px;
+    }
+    .modal h3 { margin-bottom: 12px; font-size: 17px; }
+    .modal input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .modal-btns { display: flex; justify-content: flex-end; gap: 8px; }
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ÜST BAR -->
+  <div class="header">
+    <div class="brand">
+      <div class="status-dot" id="statusDot"></div>
+      <span>AGENT</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-top" onclick="openModal('tplModal')">+ Şablon</button>
+      <button class="btn-top" onclick="openModal('setModal')">⚙️</button>
+    </div>
+  </div>
+
+  <!-- ANA BUTONLAR -->
+  <div class="grid" id="templateGrid"></div>
+
+  <!-- HIZLI ALT ÇİPLER -->
+  <div class="chips-wrap" id="chipsContainer"></div>
+
+  <!-- KONU SATIRI -->
+  <div class="subject-bar">
+    <span>Konu:</span>
+    <input type="text" id="subjectInput" value="Hazırla">
+  </div>
+
+  <!-- METİN VE SES KUTUSU -->
+  <div class="editor-box">
+    <textarea id="bodyInput" placeholder="Sesle yazdırmak için mikrofona dokunun veya buraya yazın..."></textarea>
+    <div class="interim-text" id="interimText"></div>
+    <div class="attachments" id="attList"></div>
+  </div>
+
+  <!-- MİKROFON VE MEDYA ARAÇLARI -->
+  <div class="media-section">
+    <div class="media-controls">
+      <button class="icon-btn" onclick="document.getElementById('camInput').click()">
+        <div class="icon-circle">📷</div>
+        <span>Kamera</span>
+      </button>
+
+      <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎙️</button>
+
+      <button class="icon-btn" onclick="document.getElementById('galInput').click()">
+        <div class="icon-circle">🖼️</div>
+        <span>Galeri</span>
+      </button>
+
+      <button class="icon-btn" onclick="document.getElementById('fileInput').click()">
+        <div class="icon-circle">📎</div>
+        <span>Dosya Seç</span>
+      </button>
+    </div>
+    <div class="mic-label" id="micStatus">Mikrofon</div>
+    <div class="mic-sub" id="micSub">Başlat / Durdur</div>
+  </div>
+
+  <!-- GİZLİ DOSYA GİRİŞLERİ -->
+  <input type="file" id="camInput" accept="image/*" capture="environment" style="display:none" onchange="handleFiles(this.files)">
+  <input type="file" id="galInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
+  <input type="file" id="fileInput" accept="*/*" multiple style="display:none" onchange="handleFiles(this.files)">
+
+  <!-- ALT AKSİYON TUŞLARI -->
+  <div class="bottom-bar">
+    <button class="act-btn" onclick="saveDraft()">Kaydet</button>
+    <button class="act-btn" onclick="clearAll()">Temizle</button>
+    <button class="act-btn btn-send" id="sendBtn" onclick="sendMail()">Gönder</button>
+  </div>
+
+  <!-- YENİ ŞABLON MODALI -->
+  <div class="modal-bg" id="tplModal">
+    <div class="modal">
+      <h3>Yeni Şablon Butonu Ekle</h3>
+      <input type="text" id="newTplName" placeholder="Buton Adı (Örn: VERGİ)">
+      <input type="text" id="newTplSubj" placeholder="Mail Konusu (Örn: Vergi)">
+      <input type="text" id="newTplChips" placeholder="Alt Çipler (Virgülle ayırın)">
+      <div class="modal-btns">
+        <button class="btn-top" onclick="closeModal('tplModal')">İptal</button>
+        <button class="btn-top" style="color:var(--green);border-color:var(--green)" onclick="addCustomTemplate()">Ekle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AYARLAR (APPS SCRIPT URL) MODALI -->
+  <div class="modal-bg" id="setModal">
+    <div class="modal">
+      <h3>Apps Script Bağlantısı</h3>
+      <input type="url" id="webhookInput" placeholder="https://script.google.com/macros/s/.../exec">
+      <div class="modal-btns">
+        <button class="btn-top" onclick="closeModal('setModal')">Kapat</button>
+        <button class="btn-top" style="color:var(--green);border-color:var(--green)" onclick="saveSettings()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // VARSAYILAN ŞABLONLAR
+    const defaultTemplates = [
+      { id: 'hazirla', label: 'HAZIRLA', icon: '📝', subject: 'Hazırla', cls: 'cmd-blue', chips: ['ONS Altın Raporu Hazırla', 'BİST30 Raporu Hazırla', 'Genel Piyasa Raporu Hazırla'] },
+      { id: 'pozisyon', label: 'POZİSYON', icon: '📈', subject: 'Pozisyon', cls: 'cmd-green', chips: ['Long Poz Açıldı', 'Short Poz Kapatıldı', 'Ek Alım Yapıldı', 'Stop Seviyesi Güncellendi'] },
+      { id: 'hukuk', label: 'HUKUK', icon: '⚖️', subject: 'Hukuk', cls: 'cmd-orange', chips: ['Mevzuat Araştırması Yap', 'Dilekçe Taslağı Hazırla', 'Ekli Belgeyi İncele'] },
+      { id: 'haberler', label: 'HABERLER', icon: '📰', subject: 'Haberler', cls: 'cmd-purple', chips: ['Flaş Haber Özeti Çıkar', 'Şok Kırılım Analizi', 'Ekli Grafiği Yorumla'] }
+    ];
+
+    let customTemplates = JSON.parse(localStorage.getItem('agent_custom_tpls') || '[]');
+    let activeId = 'hazirla';
+    let attachments = [];
+
+    function renderTemplates() {
+      const grid = document.getElementById('templateGrid');
+      grid.innerHTML = '';
+      const all = [...defaultTemplates, ...customTemplates];
+
+      all.forEach(t => {
+        const btn = document.createElement('button');
+        btn.className = `cmd-btn ${t.cls || 'cmd-custom'} ${t.id === activeId ? 'active' : ''}`;
+        btn.innerHTML = `<span>${t.label}</span><span>${t.icon || '⚡'}</span>`;
+        btn.onclick = () => selectTemplate(t);
+
+        if (t.custom) {
+          const del = document.createElement('span');
+          del.className = 'del-tpl';
+          del.textContent = '×';
+          del.onclick = (e) => { e.stopPropagation(); deleteTemplate(t.id); };
+          btn.appendChild(del);
+        }
+        grid.appendChild(btn);
+      });
+
+      const current = all.find(x => x.id === activeId) || all[0];
+      renderChips(current.chips || []);
+    }
+
+    function selectTemplate(t) {
+      activeId = t.id;
+      document.getElementById('subjectInput').value = t.subject;
+      renderTemplates();
+    }
+
+    function renderChips(chips) {
+      const box = document.getElementById('chipsContainer');
+      box.innerHTML = '';
+      chips.forEach(c => {
+        const el = document.createElement('button');
+        el.className = 'chip';
+        el.textContent = c;
+        el.onclick = () => {
+          const area = document.getElementById('bodyInput');
+          area.value = area.value ? area.value.trim() + '\n' + c + ' ' : c + ' ';
+          area.focus();
+        };
+        box.appendChild(el);
+      });
+    }
+
+    function addCustomTemplate() {
+      const name = document.getElementById('newTplName').value.trim().toUpperCase();
+      const subj = document.getElementById('newTplSubj').value.trim();
+      const chipsRaw = document.getElementById('newTplChips').value;
+      if (!name || !subj) return showToast('Buton adı ve konu zorunludur.');
+      const chips = chipsRaw ? chipsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+      customTemplates.push({ id: 'custom_' + Date.now(), label: name, subject: subj, chips, custom: true });
+      localStorage.setItem('agent_custom_tpls', JSON.stringify(customTemplates));
+      closeModal('tplModal');
+      renderTemplates();
+    }
+
+    function deleteTemplate(id) {
+      customTemplates = customTemplates.filter(t => t.id !== id);
+      localStorage.setItem('agent_custom_tpls', JSON.stringify(customTemplates));
+      if (activeId === id) activeId = 'hazirla';
+      renderTemplates();
+    }
+
+    // SUSMAYAN MİKROFON MOTORU (KESİNTİSİZ DİKTE)
+    let recognition = null;
+    let isListening = false;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SR();
+      recognition.lang = 'tr-TR';
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onresult = (event) => {
+        let interim = '';
+        let finalStr = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalStr += event.results[i][0].transcript + ' ';
+          } else {
+            interim += event.results[i][0].transcript;
+          }
+        }
+        if (finalStr) {
+          const area = document.getElementById('bodyInput');
+          area.value = (area.value ? area.value.trim() + ' ' : '') + finalStr.trim();
+        }
+        document.getElementById('interimText').textContent = interim;
+      };
+
+      recognition.onend = () => {
+        // Kullanıcı durdurmadıysa otomatik yeniden başlat (Susmayan Mikrofon)
+        if (isListening) {
+          try { recognition.start(); } catch (e) {}
+        }
+      };
+
+      recognition.onerror = () => {
+        if (isListening) {
+          setTimeout(() => { if (isListening) try { recognition.start(); } catch(e){} }, 400);
+        }
+      };
+    }
+
+    function toggleMic() {
+      if (!recognition) return showToast('Tarayıcınız sesli yazdırmayı desteklemiyor.');
+      const btn = document.getElementById('micBtn');
+      const st = document.getElementById('micStatus');
+      const sub = document.getElementById('micSub');
+
+      if (!isListening) {
+        isListening = true;
+        try { recognition.start(); } catch (e) {}
+        btn.classList.add('listening');
+        st.textContent = 'Dinliyor...';
+        sub.textContent = 'Durdurmak için dokunun';
+      } else {
+        isListening = false;
+        recognition.stop();
+        document.getElementById('interimText').textContent = '';
+        btn.classList.remove('listening');
+        st.textContent = 'Mikrofon';
+        sub.textContent = 'Başlat / Durdur';
+      }
+    }
+
+    // DOSYA VE FOTOĞRAF EKLEME
+    function handleFiles(fileList) {
+      Array.from(fileList).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const base64 = e.target.result.split(',')[1];
+          attachments.push({ name: file.name, mimeType: file.type || 'application/octet-stream', data: base64 });
+          renderAttachments();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderAttachments() {
+      const list = document.getElementById('attList');
+      list.innerHTML = '';
+      attachments.forEach((att, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'att-chip';
+        chip.innerHTML = `<span>📎 ${att.name.slice(0, 20)}</span><button onclick="removeAtt(${idx})">×</button>`;
+        list.appendChild(chip);
+      });
+    }
+
+    function removeAtt(idx) {
+      attachments.splice(idx, 1);
+      renderAttachments();
+    }
+
+    // TASLAK KAYDET & TEMİZLE
+    function saveDraft() {
+      const draft = {
+        activeId,
+        subject: document.getElementById('subjectInput').value,
+        body: document.getElementById('bodyInput').value
+      };
+      localStorage.setItem('agent_draft', JSON.stringify(draft));
+      showToast('Taslak kaydedildi.');
+    }
+
+    function clearAll() {
+      document.getElementById('bodyInput').value = '';
+      document.getElementById('interimText').textContent = '';
+      attachments = [];
+      renderAttachments();
+      localStorage.removeItem('agent_draft');
+      showToast('Ekran temizlendi.');
+    }
+
+    // MAİL GÖNDERİMİ (APPS SCRIPT KÖPRÜSÜ VEYA MAILTO YEDEĞİ)
+    async function sendMail() {
+      const subject = document.getElementById('subjectInput').value.trim();
+      const body = document.getElementById('bodyInput').value.trim();
+      const webhook = localStorage.getItem('agent_webhook_url') || '';
+
+      if (!subject && !body && attachments.length === 0) {
+        return showToast('Gönderilecek içerik boş.');
+      }
+
+      if (!webhook) {
+        // Apps Script URL henüz girilmemişse standart mailto açar
+        window.location.href = `mailto:cemalblack@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        return;
+      }
+
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.textContent = 'Gönderiliyor...';
+      sendBtn.disabled = true;
+
+      try {
+        await fetch(webhook, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ subject, body, attachments })
+        });
+        showToast('🚀 Komut başarıyla gönderildi!');
+        clearAll();
+      } catch (err) {
+        showToast('Gönderim hatası oluştu.');
+      } finally {
+        sendBtn.textContent = 'Gönder';
+        sendBtn.disabled = false;
+      }
+    }
+
+    // MODAL VE AYARLAR
+    function openModal(id) {
+      if (id === 'setModal') {
+        document.getElementById('webhookInput').value = localStorage.getItem('agent_webhook_url') || '';
+      }
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function saveSettings() {
+      const url = document.getElementById('webhookInput').value.trim();
+      localStorage.setItem('agent_webhook_url', url);
+      closeModal('setModal');
+      showToast('Bağlantı kaydedildi.');
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2400);
+    }
+
+    // BAŞLANGIÇ YÜKLEMESİ VE SERVICE WORKER
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = JSON.parse(localStorage.getItem('agent_draft') || 'null');
+      if (saved) {
+        activeId = saved.activeId || 'hazirla';
+        document.getElementById('subjectInput').value = saved.subject || 'Hazırla';
+        document.getElementById('bodyInput').value = saved.body || '';
+      }
+      renderTemplates();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>

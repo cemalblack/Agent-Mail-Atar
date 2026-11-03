@@ -1,0 +1,18 @@
+{
+  "name": "AGENT",
+  "short_name": "AGENT",
+  "description": "Otonom Ajan Komuta ve Sesli Emir Kokpiti",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f1319",
+  "theme_color": "#0f1319",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
