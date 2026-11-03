@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#141821">
+  <meta name="theme-color" content="#171717">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AGENT">
@@ -17,8 +17,8 @@
       height: 100dvh;
       max-height: 100dvh;
       overflow: hidden;
-      background-color: #141821;
-      color: #f1f5f9;
+      background-color: #171717;
+      color: #f2f2f2;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
     }
     body {
@@ -44,18 +44,18 @@
       color: #ffffff;
     }
     .btn-settings {
-      background: #1c2230;
-      border: 1px solid #364052;
-      color: #cbd5e1;
+      background: #262626;
+      border: 1px solid #3d3d3d;
+      color: #dcdcdc;
       padding: 7px 14px;
       border-radius: 10px;
       font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
     }
-    .btn-settings:active { background: #283044; }
+    .btn-settings:active { background: #333333; }
 
-    /* ANA KOMUT BUTONLARI (SEÇİLMEYENLER FÜME, SEÇİLEN PARLAK RENKLİ) */
+    /* ANA KOMUT BUTONLARI (SEÇİLMEYENLER MAT ANTRASİT, SEÇİLEN PARLAK RENKLİ) */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -69,9 +69,9 @@
       align-items: center;
       padding: 13px 15px;
       border-radius: 14px;
-      background: #212634;
-      border: 1.5px solid #32394a;
-      color: #94a3b8;
+      background: #242424;
+      border: 1.5px solid #383838;
+      color: #9e9e9e;
       font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.5px;
@@ -107,7 +107,7 @@
     }
     .grid.ultra-compact .cmd-btn { padding: 8px 9px; font-size: 12px; border-radius: 10px; }
 
-    /* GÖRSELDEKİ PARLAK NEON AKTİF BUTON RENKLERİ */
+    /* AKTİF BUTON RENK TEMALARI */
     .cmd-btn.active.clr-blue {
       background: linear-gradient(135deg, #1d63dc, #2979ff);
       border-color: #64b5f6;
@@ -144,7 +144,7 @@
       box-shadow: 0 4px 18px rgba(234, 179, 8, 0.45);
     }
 
-    /* HIZLI ALT ÇİPLER (KAPSÜL TASARIM) */
+    /* HIZLI ALT ÇİPLER (SAF ANTRASİT KAPSÜL) */
     .chips-wrap {
       display: flex;
       gap: 8px;
@@ -157,18 +157,18 @@
     .chips-wrap::-webkit-scrollbar { display: none; }
     .chip {
       white-space: nowrap;
-      background: #181d28;
-      border: 1px solid #364052;
-      color: #e2e8f0;
+      background: #222222;
+      border: 1px solid #3d3d3d;
+      color: #e5e5e5;
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 12.5px;
       font-weight: 500;
       cursor: pointer;
     }
-    .chip:active { background: #262f42; border-color: #64748b; }
+    .chip:active { background: #333333; border-color: #666666; }
 
-    /* KONU SATIRI VE SAĞ ÜST DURUM ROZETİ (GÖRSELDEKİ GİBİ KUTUSUZ NET BAŞLIK) */
+    /* KONU SATIRI VE SAĞ ÜST DURUM ROZETİ */
     .top-info-row {
       display: flex;
       justify-content: space-between;
@@ -185,7 +185,7 @@
     }
     .subject-inline span {
       font-size: 16px;
-      color: #cbd5e1;
+      color: #cccccc;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -213,47 +213,48 @@
       user-select: none;
     }
     .mic-aktif-badge {
-      background: #3b1822;
+      background: #3b1818;
       border: 1.5px solid #ef4444;
       color: #fca5a5;
       animation: micPulse 1.5s infinite;
     }
     .mic-donuk-badge {
-      background: #212634;
-      border: 1.5px solid #3b4458;
-      color: #94a3b8;
+      background: #262626;
+      border: 1.5px solid #424242;
+      color: #a3a3a3;
     }
 
-    /* YAZI KUTUSU (GÖRSELDEKİ İNCE EFLATUN ÇERÇEVE VE COMPACT YÜKSEKLİK) */
+    /* YAZI KUTUSU (SAF SİYAH İÇ ZEMİN VE BELİRGİN KURŞUN GRİ ÇERÇEVE) */
     .editor-wrap {
       flex: 1;
       min-height: 90px;
       max-height: 125px;
       display: flex;
       flex-direction: column;
-      background: #10131c;
-      border: 1.5px solid #6355b5;
-      box-shadow: 0 0 12px rgba(99, 85, 181, 0.2);
+      background: #111111;
+      border: 1.5px solid #454545;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
       border-radius: 14px;
       padding: 10px 13px;
       margin-bottom: 10px;
     }
     .editor-wrap:focus-within {
-      border-color: #8b7ae6;
-      box-shadow: 0 0 14px rgba(139, 122, 230, 0.35);
+      border-color: #737373;
     }
     textarea {
       flex: 1;
       width: 100%;
       background: transparent;
       border: none;
-      color: #f1f5f9;
+      color: #f2f2f2;
       font-size: 15.5px;
       line-height: 1.45;
       resize: none;
       outline: none;
       overflow-y: auto;
     }
+    textarea::placeholder { color: #6e6e6e; }
+
     .attachments {
       display: flex;
       gap: 6px;
@@ -267,12 +268,12 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      background: #212634;
-      border: 1px solid #3b4458;
+      background: #262626;
+      border: 1px solid #424242;
       padding: 3px 9px;
       border-radius: 8px;
       font-size: 11.5px;
-      color: #e2e8f0;
+      color: #e5e5e5;
       white-space: nowrap;
     }
     .att-chip button {
@@ -284,7 +285,7 @@
       font-size: 13px;
     }
 
-    /* DONDUR / DEVAM ET VE TEMİZLE SATIRI (GÖRSELDEKİ KEHRİBAR VE FÜME TONLAR) */
+    /* DONDUR / DEVAM ET VE DELİKLİ ÇÖP İKONLU TEMİZLE SATIRI */
     .voice-action-row {
       display: flex;
       gap: 10px;
@@ -295,9 +296,9 @@
       flex: 1.45;
       padding: 11px 12px;
       border-radius: 12px;
-      border: 1.5px solid #3b4458;
-      background: #232836;
-      color: #e2e8f0;
+      border: 1.5px solid #424242;
+      background: #262626;
+      color: #e5e5e5;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
@@ -311,16 +312,30 @@
       flex: 1;
       padding: 11px 12px;
       border-radius: 12px;
-      border: 1.5px solid #364052;
-      background: #232836;
-      color: #cbd5e1;
+      border: 1.5px solid #3d3d3d;
+      background: #262626;
+      color: #e0e0e0;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
     }
-    .btn-clear:active { background: #2e3547; color: #fff; }
+    .btn-clear:active { background: #333333; color: #ffffff; }
+    .trash-svg {
+      width: 17px;
+      height: 17px;
+      stroke: #38bdf8;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
 
-    /* MEDYA EKLEME SATIRI (GÖRSELDEKİ YUVARLAK KAPSÜL BUTONLAR) */
+    /* MEDYA EKLEME SATIRI (YUVARLAK KAPSÜL BUTONLAR) */
     .media-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -329,11 +344,11 @@
       flex-shrink: 0;
     }
     .media-btn {
-      background: #232836;
-      border: 1px solid #384152;
+      background: #262626;
+      border: 1px solid #3d3d3d;
       border-radius: 20px;
       padding: 9px 6px;
-      color: #cbd5e1;
+      color: #dcdcdc;
       font-size: 12.5px;
       font-weight: 500;
       cursor: pointer;
@@ -342,17 +357,31 @@
       justify-content: center;
       gap: 5px;
     }
-    .media-btn:active { background: #2e3547; border-color: #64748b; }
+    .media-btn:active { background: #333333; border-color: #666666; }
 
-    /* ORTALANMIŞ NEON YEŞİL GÖNDER BUTONU */
+    /* EN ALT SATIR: SOLDA KAPAT, SAĞDA GÖNDER */
     .send-wrap {
       display: flex;
-      justify-content: center;
+      gap: 10px;
       margin-top: auto;
       flex-shrink: 0;
     }
+    .btn-close-app {
+      flex: 1;
+      padding: 13px 14px;
+      border-radius: 26px;
+      border: 1.5px solid #454545;
+      background: #262626;
+      color: #e0e0e0;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+    }
+    .btn-close-app:active { background: #333333; transform: scale(0.98); }
+
     .btn-send {
-      width: 68%;
+      flex: 1.65;
       padding: 13px 20px;
       border-radius: 26px;
       border: none;
@@ -372,7 +401,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(10, 12, 18, 0.82);
+      background: rgba(0, 0, 0, 0.82);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -380,8 +409,8 @@
     }
     .popup-overlay.show { display: flex; }
     .popup {
-      background: #1a1f2c;
-      border: 1px solid #364052;
+      background: #1f1f1f;
+      border: 1px solid #3d3d3d;
       border-radius: 16px;
       padding: 16px;
       width: 100%;
@@ -399,8 +428,8 @@
       align-items: center;
     }
     .sec-box {
-      background: #121620;
-      border: 1px solid #283040;
+      background: #141414;
+      border: 1px solid #2e2e2e;
       border-radius: 12px;
       padding: 12px;
       margin-bottom: 10px;
@@ -408,23 +437,23 @@
     .sec-title {
       font-size: 12px;
       font-weight: 700;
-      color: #94a3b8;
+      color: #a3a3a3;
       margin-bottom: 8px;
     }
     .popup input[type="text"], .popup input[type="url"] {
-      background: #1c2230;
-      border: 1px solid #364052;
+      background: #242424;
+      border: 1px solid #3d3d3d;
       border-radius: 8px;
-      color: #f1f5f9;
+      color: #f2f2f2;
       padding: 9px 10px;
       font-size: 13px;
       width: 100%;
       outline: none;
       margin-bottom: 8px;
     }
-    .popup input:focus { border-color: #64748b; }
+    .popup input:focus { border-color: #737373; }
 
-    .picker-label { font-size: 11.5px; color: #94a3b8; margin-bottom: 5px; }
+    .picker-label { font-size: 11.5px; color: #a3a3a3; margin-bottom: 5px; }
     .color-row, .icon-row {
       display: flex;
       gap: 8px;
@@ -443,8 +472,8 @@
       transform: scale(1.15);
     }
     .ico-swatch {
-      background: #1c2230;
-      border: 1px solid #364052;
+      background: #242424;
+      border: 1px solid #3d3d3d;
       border-radius: 8px;
       width: 32px;
       height: 32px;
@@ -456,22 +485,22 @@
     }
     .ico-swatch.selected {
       border-color: #ffffff;
-      background: #2e374d;
+      background: #383838;
     }
 
     .tpl-list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #1c2230;
-      border: 1px solid #2e374d;
+      background: #242424;
+      border: 1px solid #363636;
       border-radius: 8px;
       padding: 7px 10px;
       margin-bottom: 6px;
       font-size: 12.5px;
     }
     .tpl-del-btn {
-      background: #3b1822;
+      background: #3b1818;
       border: 1px solid #ef4444;
       color: #fca5a5;
       border-radius: 6px;
@@ -489,8 +518,24 @@
       font-weight: 700;
       cursor: pointer;
     }
-    .btn-save { background: #2979ff; color: #fff; }
-    .btn-outline { background: #1c2230; border: 1px solid #364052; color: #cbd5e1; margin-top: 6px; }
+    .btn-save { background: #383838; border: 1px solid #525252; color: #fff; }
+    .btn-outline { background: #1f1f1f; border: 1px solid #3d3d3d; color: #cccccc; margin-top: 6px; }
+
+    /* KAPATILDI / UYKU MODU EKRANI */
+    .closed-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0d0d0d;
+      z-index: 300;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .closed-overlay.show { display: flex; }
 
     .toast {
       position: fixed;
@@ -512,6 +557,14 @@
 <body>
 
   <div class="toast" id="toast"></div>
+
+  <!-- KAPATILDI / UYKU EKRANI (TELEFON PENCEREYİ KAPATMAZSA DEVREYE GİRER) -->
+  <div class="closed-overlay" id="closedOverlay">
+    <div style="font-size:42px;">⏹️</div>
+    <div style="font-size:18px;font-weight:800;color:#ffffff;">AGENT KAPATILDI</div>
+    <div style="font-size:13px;color:#8e8e8e;">Mikrofon tamamen devre dışı bırakıldı.<br>Ekranı kapatabilir veya başka uygulamaya geçebilirsiniz.</div>
+    <button onclick="reopenApp()" style="margin-top:10px;padding:11px 28px;border-radius:22px;border:1.5px solid #454545;background:#262626;color:#ffffff;font-size:14px;font-weight:700;cursor:pointer;">Yeniden Aç</button>
+  </div>
 
   <!-- ÜST BAR -->
   <div class="header">
@@ -540,10 +593,18 @@
     <div class="attachments" id="attList"></div>
   </div>
 
-  <!-- DONDUR / DEVAM ET VE TEMİZLE SATIRI -->
+  <!-- DONDUR / DEVAM ET VE DELİKLİ ÇÖP İKONLU TEMİZLE SATIRI -->
   <div class="voice-action-row">
     <button id="sesli-dondur-btn" class="btn-voice-toggle" onclick="dondurSesliNot()">🎤 Dinlemeye Başla</button>
-    <button class="btn-clear" onclick="clearAll()">Kapat / Temizle</button>
+    <button class="btn-clear" onclick="clearAll()">
+      <svg class="trash-svg" viewBox="0 0 24 24">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+      <span>Temizle</span>
+    </button>
   </div>
 
   <!-- MEDYA EKLEME SATIRI -->
@@ -558,8 +619,9 @@
   <input type="file" id="galInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
   <input type="file" id="fileInput" accept="*/*" multiple style="display:none" onchange="handleFiles(this.files)">
 
-  <!-- ORTALANMIŞ NEON YEŞİL GÖNDER BUTONU -->
+  <!-- EN ALT SATIR: SOLDA KAPAT, SAĞDA GÖNDER -->
   <div class="send-wrap">
+    <button class="btn-close-app" onclick="closeApp()">KAPAT</button>
     <button class="btn-send" id="sendBtn" onclick="sendMail()">GÖNDER</button>
   </div>
 
@@ -568,7 +630,7 @@
     <div class="popup">
       <div class="popup-title">
         <span>⚙️ Ayarlar ve Şablonlar</span>
-        <button onclick="kapatAyarlar()" style="background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;">✕</button>
+        <button onclick="kapatAyarlar()" style="background:none;border:none;color:#a3a3a3;font-size:18px;cursor:pointer;">✕</button>
       </div>
 
       <!-- 1. APPS SCRIPT URL -->
@@ -807,7 +869,7 @@
       guncelleSesliDurumUI(false);
     }
 
-    // ===== OTOMATİK TASLAK VE TEMİZLEME =====
+    // ===== OTOMATİK TASLAK, TEMİZLEME VE UYGULAMAYI KAPATMA =====
     function otomatikTaslakKaydet() {
       const draft = {
         activeId,
@@ -825,7 +887,23 @@
       renderAttachments();
       localStorage.removeItem('agent_draft');
       document.getElementById('sesli-dondur-btn').textContent = '🎤 Dinlemeye Başla';
-      showToast('Ekran temizlendi.');
+      showToast('Yazılar ve ekler temizlendi.');
+    }
+
+    function closeApp() {
+      durdurMikrofonKesin();
+      document.getElementById('sesli-dondur-btn').textContent = '🎤 Dinlemeye Başla';
+      try { window.close(); } catch (e) {}
+      if (window.history.length > 1) {
+        window.history.back();
+      }
+      setTimeout(() => {
+        document.getElementById('closedOverlay').classList.add('show');
+      }, 150);
+    }
+
+    function reopenApp() {
+      document.getElementById('closedOverlay').classList.remove('show');
     }
 
     // ===== DOSYA VE KAMERA EKLEME =====
@@ -940,7 +1018,7 @@
       templates.forEach(t => {
         const row = document.createElement('div');
         row.className = 'tpl-list-item';
-        row.innerHTML = `<span>${t.icon || '⚡'} <b>${t.label}</b> <span style="color:#94a3b8;font-size:11px;">(${t.subject})</span></span>`;
+        row.innerHTML = `<span>${t.icon || '⚡'} <b>${t.label}</b> <span style="color:#9e9e9e;font-size:11px;">(${t.subject})</span></span>`;
         const delBtn = document.createElement('button');
         delBtn.className = 'tpl-del-btn';
         delBtn.textContent = 'Sil';
