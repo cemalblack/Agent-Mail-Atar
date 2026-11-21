@@ -63,6 +63,9 @@
       margin-bottom: 9px;
       flex-shrink: 0;
     }
+    .grid.hidden {
+      display: none;
+    }
     .cmd-btn {
       display: flex;
       justify-content: space-between;
@@ -154,6 +157,7 @@
       scrollbar-width: none;
       flex-shrink: 0;
     }
+    .chips-wrap.hidden { display: none; }
     .chips-wrap::-webkit-scrollbar { display: none; }
     .chip {
       white-space: nowrap;
@@ -175,6 +179,7 @@
       align-items: center;
       gap: 10px;
       margin-bottom: 7px;
+      min-height: 28px;
       flex-shrink: 0;
     }
     .subject-inline {
@@ -198,6 +203,11 @@
       width: 100%;
       outline: none;
     }
+    .subject-inline input::placeholder {
+      color: #5c5c5c;
+      font-weight: 500;
+      font-size: 14px;
+    }
 
     @keyframes micPulse {
       0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
@@ -205,30 +215,27 @@
       100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
     .mic-badge {
+      display: none;
       font-size: 11.5px;
-      padding: 5px 11px;
+      padding: 4px 11px;
       border-radius: 18px;
       font-weight: 600;
       white-space: nowrap;
       user-select: none;
     }
-    .mic-aktif-badge {
+    .mic-badge.show {
+      display: inline-block;
       background: #3b1818;
       border: 1.5px solid #ef4444;
       color: #fca5a5;
       animation: micPulse 1.5s infinite;
     }
-    .mic-donuk-badge {
-      background: #262626;
-      border: 1.5px solid #424242;
-      color: #a3a3a3;
-    }
 
-    /* %20 BÜYÜTÜLMÜŞ YAZI KUTUSU VE MAVİ CANLI ÖNİZLEME SATIRI */
+    /* YAZI KUTUSU VE MAVİ CANLI ÖNİZLEME SATIRI */
     .editor-wrap {
       flex: 1.25;
       min-height: 118px;
-      max-height: 165px;
+      max-height: 185px;
       display: flex;
       flex-direction: column;
       background: #111111;
@@ -255,7 +262,7 @@
     }
     textarea::placeholder { color: #6e6e6e; }
 
-    /* MAVİ CANLI SES ÖNİZLEME SATIRI (STABİLİTE TAMPONU) */
+    /* MAVİ CANLI SES ÖNİZLEME SATIRI */
     .interim-line {
       min-height: 21px;
       font-size: 13.5px;
@@ -318,7 +325,7 @@
       font-size: 13px;
     }
 
-    /* BÜYÜTÜLMÜŞ ERGONOMİK DONDUR/BAŞLAT VE TEMİZLE BUTONLARI */
+    /* SES İLE YAZ VE TEMİZLE BUTONLARI */
     .voice-action-row {
       display: flex;
       gap: 10px;
@@ -339,13 +346,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
+      gap: 9px;
+      transition: all 0.18s ease;
     }
     .btn-voice-toggle:active { background: #303030; }
     .btn-voice-toggle.listening {
-      background: #44341b;
-      border-color: #d99b26;
-      color: #fbd38d;
+      background: #3b1818;
+      border-color: #ef4444;
+      color: #fecaca;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+    }
+    .mic-svg {
+      width: 20px;
+      height: 20px;
+      stroke: #38bdf8;
+      fill: none;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .stop-svg {
+      width: 18px;
+      height: 18px;
+      fill: #f87171;
+      flex-shrink: 0;
     }
 
     .btn-clear {
@@ -376,7 +401,7 @@
       flex-shrink: 0;
     }
 
-    /* MEDYA EKLEME SATIRI (YUVARLAK KAPSÜL BUTONLAR) */
+    /* MEDYA EKLEME SATIRI */
     .media-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -400,7 +425,7 @@
     }
     .media-btn:active { background: #333333; border-color: #666666; }
 
-    /* EN ALT SATIR: SOLDA KAPAT, SAĞDA GÖNDER */
+    /* EN ALT SATIR: SOLDA KAPAT, SAĞDA DİNAMİK GÖNDER */
     .send-wrap {
       display: flex;
       gap: 10px;
@@ -425,16 +450,23 @@
       flex: 1.55;
       padding: 13px 20px;
       border-radius: 26px;
-      border: none;
-      background: linear-gradient(90deg, #00d26a, #00e676);
-      color: #051b0e;
+      border: 1.5px solid #3d3d3d;
+      background: #242424;
+      color: #787878;
       font-size: 16px;
       font-weight: 800;
       letter-spacing: 1px;
       cursor: pointer;
+      box-shadow: none;
+      transition: all 0.2s ease;
+    }
+    .btn-send.ready {
+      border-color: transparent;
+      background: linear-gradient(90deg, #00d26a, #00e676);
+      color: #051b0e;
       box-shadow: 0 4px 20px rgba(0, 230, 118, 0.42);
     }
-    .btn-send:active { transform: scale(0.98); }
+    .btn-send.ready:active { transform: scale(0.98); }
     .btn-send:disabled { opacity: 0.5; cursor: default; }
 
     /* AYARLAR VE ŞABLON YÖNETİM MODALI */
@@ -481,7 +513,9 @@
       color: #a3a3a3;
       margin-bottom: 8px;
     }
-    .popup input[type="text"], .popup input[type="url"] {
+    .popup input[type="text"],
+    .popup input[type="url"],
+    .popup input[type="email"] {
       background: #242424;
       border: 1px solid #3d3d3d;
       border-radius: 8px;
@@ -540,6 +574,12 @@
       margin-bottom: 6px;
       font-size: 12.5px;
     }
+    .tpl-empty-note {
+      font-size: 12px;
+      color: #6e6e6e;
+      text-align: center;
+      padding: 6px 0;
+    }
     .tpl-del-btn {
       background: #3b1818;
       border: 1px solid #ef4444;
@@ -592,6 +632,7 @@
       font-weight: 700;
       display: none;
       z-index: 200;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -614,30 +655,38 @@
   </div>
 
   <!-- ŞABLON KOMUT BUTONLARI -->
-  <div class="grid" id="templateGrid"></div>
+  <div class="grid hidden" id="templateGrid"></div>
 
   <!-- HIZLI ALT ÇİPLER -->
-  <div class="chips-wrap" id="chipsContainer"></div>
+  <div class="chips-wrap hidden" id="chipsContainer"></div>
 
-  <!-- KONU VE SAĞ ÜST MİKROFON ROZETİ -->
+  <!-- KONU VE SAĞ ÜST DİNLEME ROZETİ -->
   <div class="top-info-row">
     <div class="subject-inline">
       <span>Konu:</span>
-      <input type="text" id="subjectInput" value="Hazırla" oninput="otomatikTaslakKaydet()">
+      <input type="text" id="subjectInput" value="" placeholder="Konu yazın veya şablon seçin..." oninput="otomatikTaslakKaydet()">
     </div>
-    <span id="sesli-durum-badge" class="mic-badge mic-donuk-badge">⏸️ Donduruldu</span>
+    <span id="sesli-durum-badge" class="mic-badge">🔴 Dinleniyor...</span>
   </div>
 
-  <!-- BÜYÜTÜLMÜŞ METİN KUTUSU VE MAVİ CANLI ÖNİZLEME SATIRI -->
+  <!-- METİN KUTUSU VE MAVİ CANLI ÖNİZLEME SATIRI -->
   <div class="editor-wrap">
-    <textarea id="bodyInput" placeholder="Dinlemeye Başla tuşuna dokunun veya buraya yazın..." oninput="manuelMetinDegisti()"></textarea>
+    <textarea id="bodyInput" placeholder="Ses ile Yaz tuşuna dokunun veya buraya yazın..." oninput="manuelMetinDegisti()"></textarea>
     <div id="interimLine" class="interim-line empty">Canlı ses önizlemesi burada görünür...</div>
     <div class="attachments" id="attList"></div>
   </div>
 
-  <!-- İRİ VE RAHAT BASILAN DİNLEME / TEMİZLE SATIRI -->
+  <!-- SES İLE YAZ / TEMİZLE SATIRI -->
   <div class="voice-action-row">
-    <button id="sesli-dondur-btn" class="btn-voice-toggle" onclick="dondurSesliNot()">🎤 Dinlemeye Başla</button>
+    <button id="sesli-dondur-btn" class="btn-voice-toggle" onclick="dondurSesliNot()">
+      <svg class="mic-svg" viewBox="0 0 24 24">
+        <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+        <path d="M5 10v1a7 7 0 0 0 14 0v-1"></path>
+        <line x1="12" y1="18" x2="12" y2="22"></line>
+        <line x1="8" y1="22" x2="16" y2="22"></line>
+      </svg>
+      <span>Ses ile Yaz</span>
+    </button>
     <button class="btn-clear" onclick="clearAll()">
       <span>Temizle</span>
       <svg class="trash-svg" viewBox="0 0 24 24">
@@ -675,19 +724,22 @@
         <button onclick="kapatAyarlar()" style="background:none;border:none;color:#a3a3a3;font-size:18px;cursor:pointer;">✕</button>
       </div>
 
-      <!-- 1. APPS SCRIPT URL -->
+      <!-- 1. HEDEF E-POSTA VE APPS SCRIPT BAĞLANTISI -->
       <div class="sec-box">
-        <div class="sec-title">🔗 Google Apps Script Bağlantısı</div>
+        <div class="sec-title">📬 Hedef E-Posta ve Bağlantı Ayarları</div>
+        <div class="picker-label">Gönderilecek E-Posta Adresi:</div>
+        <input type="email" id="targetEmailInput" placeholder="ornek@gmail.com">
+        <div class="picker-label">Google Apps Script Bağlantısı (İsteğe Bağlı):</div>
         <input type="url" id="webhookInput" placeholder="https://script.google.com/macros/s/.../exec">
-        <button class="btn-small btn-save" onclick="saveWebhook()">Bağlantıyı Kaydet</button>
+        <button class="btn-small btn-save" onclick="saveConnectionSettings()">Ayarları Kaydet</button>
       </div>
 
       <!-- 2. YENİ ŞABLON EKLE -->
       <div class="sec-box">
         <div class="sec-title">➕ Yeni Komut Butonu Ekle</div>
-        <input type="text" id="newTplName" placeholder="Buton Adı (Örn: VERGİ)">
-        <input type="text" id="newTplSubj" placeholder="Mail Konusu (Örn: Vergi)">
-        <input type="text" id="newTplChips" placeholder="Alt Çipler (Virgülle ayırın)">
+        <input type="text" id="newTplName" placeholder="Buton Adı (Örn: NOTLAR)">
+        <input type="text" id="newTplSubj" placeholder="Mail Konusu (Örn: Günlük Not)">
+        <input type="text" id="newTplChips" placeholder="Alt Çipler (Virgülle ayırın, isteğe bağlı)">
 
         <div class="picker-label">Buton Rengi Seçin (Seçildiğinde Parlar):</div>
         <div class="color-row" id="colorPickerRow"></div>
@@ -700,21 +752,14 @@
 
       <!-- 3. MEVCUT BUTONLARI YÖNET / SİL -->
       <div class="sec-box">
-        <div class="sec-title">📂 Mevcut Butonlar (Sil / Sıfırla)</div>
+        <div class="sec-title">📂 Mevcut Butonlar</div>
         <div id="settingsTplList"></div>
-        <button class="btn-small btn-outline" onclick="restoreDefaultTemplates()">🔄 Varsayılan 4 Butonu Geri Yükle</button>
+        <button id="clearAllTplBtn" class="btn-small btn-outline" style="display:none;" onclick="clearAllTemplates()">🗑️ Tüm Butonları Temizle</button>
       </div>
     </div>
   </div>
 
   <script>
-    const VARSAYILAN_SABLONLAR = [
-      { id: 'hazirla', label: 'HAZIRLA', icon: '📝', subject: 'Hazırla', cls: 'clr-blue', chips: ['ONS Altın Raporu Hazırla', 'BİST30 Raporu Hazırla', 'Genel Piyasa Raporu Hazırla'] },
-      { id: 'pozisyon', label: 'POZİSYON', icon: '📈', subject: 'Pozisyon', cls: 'clr-green', chips: ['Long Poz Açıldı', 'Short Poz Kapatıldı', 'Ek Alım Yapıldı', 'Stop Güncellendi'] },
-      { id: 'hukuk', label: 'HUKUK', icon: '⚖️', subject: 'Hukuk', cls: 'clr-orange', chips: ['Mevzuat Araştırması Yap', 'Dilekçe Taslağı Hazırla', 'Ekli Belgeyi İncele'] },
-      { id: 'haberler', label: 'HABERLER', icon: '📰', subject: 'Haberler', cls: 'clr-purple', chips: ['Flaş Haber Özeti Çıkar', 'Şok Kırılım Analizi', 'Ekli Grafiği Yorumla'] }
-    ];
-
     const RENK_SECENEKLERI = [
       { cls: 'clr-blue', hex: '#2979ff' },
       { cls: 'clr-green', hex: '#22c55e' },
@@ -727,30 +772,52 @@
 
     const IKON_SECENEKLERI = ['📝', '📈', '⚖️', '📰', '💰', '🏦', '⚡', '🎯', '🛡️', '📊'];
 
+    const MIC_SVG_HTML = `
+      <svg class="mic-svg" viewBox="0 0 24 24">
+        <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+        <path d="M5 10v1a7 7 0 0 0 14 0v-1"></path>
+        <line x1="12" y1="18" x2="12" y2="22"></line>
+        <line x1="8" y1="22" x2="16" y2="22"></line>
+      </svg>
+      <span>Ses ile Yaz</span>
+    `;
+
+    const STOP_SVG_HTML = `
+      <svg class="stop-svg" viewBox="0 0 24 24">
+        <rect x="5" y="5" width="14" height="14" rx="2.5"></rect>
+      </svg>
+      <span>Tamam (Durdur)</span>
+    `;
+
     let templates = [];
-    let activeId = 'hazirla';
+    let activeId = null;
     let selectedColor = 'clr-blue';
     let selectedIcon = '⚡';
     let attachments = [];
 
     function loadTemplates() {
-      const saved = localStorage.getItem('agent_all_templates');
+      const saved = localStorage.getItem('agent_custom_templates');
       if (saved) {
         try { templates = JSON.parse(saved); } catch (e) { templates = []; }
       }
-      if (!templates || templates.length === 0) {
-        templates = JSON.parse(JSON.stringify(VARSAYILAN_SABLONLAR));
-        saveTemplates();
+      if (!Array.isArray(templates)) {
+        templates = [];
       }
     }
 
     function saveTemplates() {
-      localStorage.setItem('agent_all_templates', JSON.stringify(templates));
+      localStorage.setItem('agent_custom_templates', JSON.stringify(templates));
     }
 
     function renderTemplates() {
       const grid = document.getElementById('templateGrid');
       grid.innerHTML = '';
+
+      if (templates.length === 0) {
+        grid.className = 'grid hidden';
+        renderChips([]);
+        return;
+      }
 
       grid.className = 'grid';
       if (templates.length > 6) {
@@ -759,8 +826,9 @@
         grid.classList.add('compact');
       }
 
-      if (!templates.find(t => t.id === activeId) && templates.length > 0) {
-        activeId = templates[0].id;
+      // Seçili şablon silindiyse seçimi sıfırla (otomatik başka şablon seçme)
+      if (activeId && !templates.find(t => t.id === activeId)) {
+        activeId = null;
       }
 
       templates.forEach(t => {
@@ -772,13 +840,22 @@
         grid.appendChild(btn);
       });
 
-      const current = templates.find(x => x.id === activeId);
+      const current = activeId ? templates.find(x => x.id === activeId) : null;
       renderChips(current ? (current.chips || []) : []);
     }
 
     function selectTemplate(t) {
-      activeId = t.id;
-      document.getElementById('subjectInput').value = t.subject;
+      const subjInput = document.getElementById('subjectInput');
+      if (activeId === t.id) {
+        // Seçili olana tekrar basılırsa seçimi kaldır
+        activeId = null;
+        if (subjInput.value === t.subject) {
+          subjInput.value = '';
+        }
+      } else {
+        activeId = t.id;
+        subjInput.value = t.subject;
+      }
       renderTemplates();
       otomatikTaslakKaydet();
     }
@@ -786,6 +863,11 @@
     function renderChips(chips) {
       const box = document.getElementById('chipsContainer');
       box.innerHTML = '';
+      if (!chips || chips.length === 0) {
+        box.className = 'chips-wrap hidden';
+        return;
+      }
+      box.className = 'chips-wrap';
       chips.forEach(c => {
         const el = document.createElement('button');
         el.className = 'chip';
@@ -795,10 +877,26 @@
           area.value = area.value ? area.value.trim() + '\n' + c + ' ' : c + ' ';
           area.scrollTop = area.scrollHeight;
           oncekiOturumMetni = area.value.trim();
+          guncelleGonderButonu();
           otomatikTaslakKaydet();
         };
         box.appendChild(el);
       });
+    }
+
+    // ===== DİNAMİK GÖNDER BUTONU KONTROLÜ =====
+    function guncelleGonderButonu() {
+      const sendBtn = document.getElementById('sendBtn');
+      if (!sendBtn) return;
+      const bodyVal = document.getElementById('bodyInput').value.trim();
+      const geciciVar = sonGeciciMetin && sonGeciciMetin.trim().length > 0;
+      const icerikVar = bodyVal.length > 0 || geciciVar || attachments.length > 0;
+
+      if (icerikVar) {
+        sendBtn.classList.add('ready');
+      } else {
+        sendBtn.classList.remove('ready');
+      }
     }
 
     // ===== MAVİ ÖNİZLEME TAMPONLU VE TEKRARSIZ SES MOTORU =====
@@ -811,6 +909,7 @@
     function manuelMetinDegisti() {
       var kutu = document.getElementById('bodyInput');
       if (kutu) oncekiOturumMetni = kutu.value.trim();
+      guncelleGonderButonu();
       otomatikTaslakKaydet();
     }
 
@@ -834,16 +933,14 @@
       var dBtn = document.getElementById('sesli-dondur-btn');
       if (!bdg || !dBtn) return;
       if (dinliyor) {
-        bdg.className = 'mic-badge mic-aktif-badge';
-        bdg.textContent = '🔴 Dinleniyor...';
+        bdg.className = 'mic-badge show';
         dBtn.className = 'btn-voice-toggle listening';
-        dBtn.textContent = '⏸ Tamam (Dondur)';
+        dBtn.innerHTML = STOP_SVG_HTML;
         guncelleInterimSatiri('', true);
       } else {
-        bdg.className = 'mic-badge mic-donuk-badge';
-        bdg.textContent = '⏸️ Donduruldu';
+        bdg.className = 'mic-badge';
         dBtn.className = 'btn-voice-toggle';
-        dBtn.textContent = '🎤 Dinlemeye Devam Et';
+        dBtn.innerHTML = MIC_SVG_HTML;
         guncelleInterimSatiri('', false);
       }
     }
@@ -852,6 +949,7 @@
       var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRec) {
         showToast('Tarayıcınız sesli yazdırmayı desteklemiyor.');
+        durdurMikrofonKesin();
         return;
       }
       if (sesTanima) {
@@ -881,7 +979,6 @@
           }
         }
 
-        // Kesinleşen cümleleri ana metin kutusuna sabitle
         if (oturumKesin.trim()) {
           var birlesik = (oncekiOturumMetni ? oncekiOturumMetni + ' ' : '') + oturumKesin.trim();
           var kutu = document.getElementById('bodyInput');
@@ -892,9 +989,9 @@
           }
         }
 
-        // Henüz kesinleşmemiş kelimeleri yalnızca alttaki mavi önizleme satırında göster
         sonGeciciMetin = oturumAra;
         guncelleInterimSatiri(oturumAra, true);
+        guncelleGonderButonu();
       };
 
       sesTanima.onerror = function(ev) {
@@ -913,6 +1010,7 @@
           otomatikTaslakKaydet();
         }
         if (kutu) oncekiOturumMetni = kutu.value.trim();
+        guncelleGonderButonu();
 
         if (sesDinlemeAktif && !sesDonukMu) {
           try { sesTanima.start(); } catch (e) {}
@@ -946,35 +1044,42 @@
         try { sesTanima.onend = null; sesTanima.stop(); } catch (e) {}
       }
       if (kutu) oncekiOturumMetni = kutu.value.trim();
+      guncelleGonderButonu();
       otomatikTaslakKaydet();
       guncelleSesliDurumUI(false);
     }
 
     // ===== OTOMATİK TASLAK, TEMİZLEME VE UYGULAMAYI KAPATMA =====
     function otomatikTaslakKaydet() {
-      const draft = {
-        activeId,
-        subject: document.getElementById('subjectInput').value,
-        body: document.getElementById('bodyInput').value
-      };
+      const subject = document.getElementById('subjectInput').value;
+      const body = document.getElementById('bodyInput').value;
+      if (!activeId && !subject.trim() && !body.trim()) {
+        localStorage.removeItem('agent_draft');
+        return;
+      }
+      const draft = { activeId, subject, body };
       localStorage.setItem('agent_draft', JSON.stringify(draft));
     }
 
-    function clearAll() {
+    function clearAll(sessiz) {
       sonGeciciMetin = '';
       durdurMikrofonKesin();
+      activeId = null;
+      document.getElementById('subjectInput').value = '';
       document.getElementById('bodyInput').value = '';
       oncekiOturumMetni = '';
       attachments = [];
       renderAttachments();
+      renderTemplates();
+      guncelleGonderButonu();
       localStorage.removeItem('agent_draft');
-      document.getElementById('sesli-dondur-btn').textContent = '🎤 Dinlemeye Başla';
-      showToast('Yazılar ve ekler temizlendi.');
+      if (!sessiz) {
+        showToast('Yazılar ve seçimler temizlendi.');
+      }
     }
 
     function closeApp() {
       durdurMikrofonKesin();
-      document.getElementById('sesli-dondur-btn').textContent = '🎤 Dinlemeye Başla';
       try { window.close(); } catch (e) {}
       if (window.history.length > 1) {
         window.history.back();
@@ -996,6 +1101,7 @@
           const base64 = e.target.result.split(',')[1];
           attachments.push({ name: file.name, mimeType: file.type || 'application/octet-stream', data: base64 });
           renderAttachments();
+          guncelleGonderButonu();
         };
         reader.readAsDataURL(file);
       });
@@ -1015,6 +1121,7 @@
     function removeAtt(idx) {
       attachments.splice(idx, 1);
       renderAttachments();
+      guncelleGonderButonu();
     }
 
     // ===== MAİL GÖNDERİMİ =====
@@ -1022,14 +1129,20 @@
       durdurMikrofonKesin();
       const subject = document.getElementById('subjectInput').value.trim();
       const body = document.getElementById('bodyInput').value.trim();
-      const webhook = localStorage.getItem('agent_webhook_url') || '';
+      const webhook = (localStorage.getItem('agent_webhook_url') || '').trim();
+      const targetEmail = (localStorage.getItem('agent_target_email') || '').trim();
 
-      if (!subject && !body && attachments.length === 0) {
-        return showToast('Gönderilecek içerik boş.');
+      if (!body && attachments.length === 0) {
+        return showToast('Önce bir metin yazın veya dosya ekleyin.');
+      }
+
+      if (!webhook && !targetEmail) {
+        acAyarlar();
+        return showToast('Lütfen önce Ayarlar\'dan e-posta veya bağlantı kaydedin.');
       }
 
       if (!webhook) {
-        window.location.href = `mailto:cemalblack@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         return;
       }
 
@@ -1042,20 +1155,28 @@
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ subject, body, attachments })
+          body: JSON.stringify({
+            to: targetEmail,
+            email: targetEmail,
+            subject,
+            body,
+            attachments
+          })
         });
-        clearAll();
-        showToast('✅ Komut başarıyla gönderildi!');
+        clearAll(true);
+        showToast('✅ Başarıyla gönderildi!');
       } catch (err) {
         showToast('Gönderim hatası oluştu.');
       } finally {
         sendBtn.textContent = 'GÖNDER';
         sendBtn.disabled = false;
+        guncelleGonderButonu();
       }
     }
 
     // ===== AYARLAR VE ŞABLON YÖNETİMİ =====
     function acAyarlar() {
+      document.getElementById('targetEmailInput').value = localStorage.getItem('agent_target_email') || '';
       document.getElementById('webhookInput').value = localStorage.getItem('agent_webhook_url') || '';
       renderPickers();
       renderSettingsTplList();
@@ -1066,10 +1187,12 @@
       document.getElementById('setModal').classList.remove('show');
     }
 
-    function saveWebhook() {
+    function saveConnectionSettings() {
+      const email = document.getElementById('targetEmailInput').value.trim();
       const url = document.getElementById('webhookInput').value.trim();
+      localStorage.setItem('agent_target_email', email);
       localStorage.setItem('agent_webhook_url', url);
-      showToast('✓ Bağlantı kaydedildi.');
+      showToast('✓ E-posta ve bağlantı ayarları kaydedildi.');
     }
 
     function renderPickers() {
@@ -1096,7 +1219,16 @@
 
     function renderSettingsTplList() {
       const container = document.getElementById('settingsTplList');
+      const clearBtn = document.getElementById('clearAllTplBtn');
       container.innerHTML = '';
+
+      if (templates.length === 0) {
+        container.innerHTML = '<div class="tpl-empty-note">Henüz eklenmiş bir şablon butonu yok.</div>';
+        clearBtn.style.display = 'none';
+        return;
+      }
+
+      clearBtn.style.display = 'block';
       templates.forEach(t => {
         const row = document.createElement('div');
         row.className = 'tpl-list-item';
@@ -1135,20 +1267,24 @@
     }
 
     function deleteTemplate(id) {
-      if (templates.length <= 1) return showToast('En az 1 buton kalmalıdır.');
       templates = templates.filter(t => t.id !== id);
+      if (activeId === id) {
+        activeId = null;
+      }
       saveTemplates();
       renderSettingsTplList();
       renderTemplates();
+      otomatikTaslakKaydet();
     }
 
-    function restoreDefaultTemplates() {
-      templates = JSON.parse(JSON.stringify(VARSAYILAN_SABLONLAR));
-      activeId = 'hazirla';
+    function clearAllTemplates() {
+      templates = [];
+      activeId = null;
       saveTemplates();
       renderSettingsTplList();
       renderTemplates();
-      showToast('✓ Varsayılan butonlar yüklendi.');
+      otomatikTaslakKaydet();
+      showToast('Tüm butonlar kaldırıldı.');
     }
 
     function showToast(msg) {
@@ -1162,12 +1298,15 @@
       loadTemplates();
       const saved = JSON.parse(localStorage.getItem('agent_draft') || 'null');
       if (saved) {
-        activeId = saved.activeId || templates[0].id;
-        document.getElementById('subjectInput').value = saved.subject || 'Hazırla';
+        activeId = saved.activeId || null;
+        document.getElementById('subjectInput').value = saved.subject || '';
         document.getElementById('bodyInput').value = saved.body || '';
         oncekiOturumMetni = saved.body || '';
+      } else {
+        activeId = null;
       }
       renderTemplates();
+      guncelleGonderButonu();
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(() => {});
       }
